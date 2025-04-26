@@ -74,7 +74,6 @@ DEST_INSTANCE_IP=$(gcloud sql instances describe ${INSTANCE_DESTINATION} --forma
 SA_NAME_DEST=$(gcloud sql instances describe $INSTANCE_DESTINATION --format="value(serviceAccountEmailAddress)")
 gsutil iam ch serviceAccount:${SA_NAME_DEST}:objectAdmin $BUCKET_MIGRATION
 
-# ADD USER TO WIREGUARD!!! #
 # CREATE DEFAULT USERS # 
 psql postgresql://postgres:${POSTGRES_DEST_PASSWORD}@${DEST_INSTANCE_IP}/postgres << EOF
     CREATE role '${DEVELOPER_ROLE}' login encrypted password '${DEVELOPER_ROLE_PWD}';
