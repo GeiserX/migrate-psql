@@ -20,8 +20,9 @@ NAMESPACE=...
 kubectx $KUBECTX
 kubens $NAMESPACE
 PASSWORDS=()
-for ROLE in "${ROLES[@]}"
-    PASSWORDS+=$(eval 'kubectl get secret ${ROLE}-user-credentials -o jsonpath="{.data.SPRING_DATASOURCE_PASSWORD}" | base64 --decode')
+for ROLE in "${ROLES[@]}"; do
+    PASSWORDS+=("$(eval 'kubectl get secret ${ROLE}-user-credentials -o jsonpath="{.data.SPRING_DATASOURCE_PASSWORD}" | base64 --decode')")
+done
 #echo $PASSWORDS
 
 # SET PROJECT ID #
@@ -103,8 +104,7 @@ for ((i=1; i<=$LEN_DBS; i+=1)); do
     run_sql ${DBs[i]} ${PASSWORDS[i]} ${ROLES[i]}
 done
 
-for ((i=1; i<=$LEN_DBS; i+=1)); do
-  ALTER TABLE  OWNER TO new_role_name;
+# TODO: per database, ALTER TABLE <table> OWNER TO <role>; (never finished, so not run)
 # IMPORT DATABASES FROM GCS #
 for ((i=1; i<=$LEN_DBS; i+=1)); do
     echo ${DBs[i]}
