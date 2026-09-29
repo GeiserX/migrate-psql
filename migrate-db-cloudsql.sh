@@ -21,7 +21,7 @@ kubectx $KUBECTX
 kubens $NAMESPACE
 PASSWORDS=()
 for ROLE in "${ROLES[@]}"; do
-    PASSWORDS+=$(eval 'kubectl get secret ${ROLE}-user-credentials -o jsonpath="{.data.SPRING_DATASOURCE_PASSWORD}" | base64 --decode')
+    PASSWORDS+=("$(eval 'kubectl get secret ${ROLE}-user-credentials -o jsonpath="{.data.SPRING_DATASOURCE_PASSWORD}" | base64 --decode')")
 done
 #echo $PASSWORDS
 
